@@ -23,9 +23,9 @@ with open("./BTCUSDT-D.csv", "r") as data:
         # Calculate a set of features to be used
         day = date.replace('"', '').split("-")[0]
         difference = round(close_price * 100 / open_price - 100, 2)
-        high_to_close = round((high_price - close_price) / close_price, 2)
-        low_to_close = round((close_price - low_price) / close_price, 2)
-        high_to_low = round((high_price - low_price) / high_price, 2)
+        high_to_close = round((high_price - close_price) * 100 / close_price, 2)
+        low_to_close = round((close_price - low_price) * 100 / close_price, 2)
+        high_to_low = round((high_price - low_price) * 100 / high_price, 2)
 
         # Place all the features into a list
         price_metrics = [difference, high_to_close, low_to_close, high_to_low]
@@ -55,26 +55,35 @@ def function(day, values):
 
     # Iterate over every list in the list
     for num in values:
+        difference += num[0]
+        high_to_close += num[1]
+        low_to_close += num[2]
+        high_to_low += num[3]
 
         # Only add entries that are inside the threshold
-        if threshold > num[0] > -threshold:
-            difference += num[0]
-            diff_div += 1
-        if threshold > num[1] > -threshold:
-            high_to_close += num[1]
-            high_div += 1
-        if threshold > num[2] > -threshold:
-            low_to_close += num[2]
-            low_div += 1
-        if threshold > num[3] > -threshold:
-            high_to_low += num[3]
-            mag_div += 1
+        # if threshold > num[0] > -threshold:
+        #     difference += num[0]
+        #     diff_div += 1
+        # if threshold > num[1] > -threshold:
+        #     high_to_close += num[1]
+        #     high_div += 1
+        # if threshold > num[2] > -threshold:
+        #     low_to_close += num[2]
+        #     low_div += 1
+        # if threshold > num[3] > -threshold:
+        #     high_to_low += num[3]
+        #     mag_div += 1
 
     # divide the totals by the amount of entries and round the answer
-    difference = round(difference/diff_div,2)
-    high_to_close = round(high_to_close/high_div,2)
-    low_to_close = round(low_to_close/low_div,2)
-    high_to_low = round(high_to_low/mag_div,2)
+    # difference = round(difference/diff_div,2)
+    # high_to_close = round(high_to_close/high_div,2)
+    # low_to_close = round(low_to_close/low_div,2)
+    # high_to_low = round(high_to_low/mag_div,2)
+
+    difference = round(difference / len(values), 2)
+    high_to_close = round(high_to_close / len(values), 2)
+    low_to_close = round(low_to_close / len(values), 2)
+    high_to_low = round(high_to_low / len(values), 2)
 
     print(f"{day}\t Change: {difference}\t High: {high_to_close}\t Low: {low_to_close}\t Magnitude: {high_to_low}")
 
