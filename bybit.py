@@ -67,11 +67,12 @@ def obtain_historical_data(url, category, symbol, interval, limit):
 
 
 # Fetch the ohlc for the day on the 15minute time frame
-obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "15", 96)
+# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "15", 150)
+# # Fetch the ohlc for the day on the 1hour time frame
+# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "60", 30)
+# # Fetch the ohlc for the day on the 1hour time frame
+# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "240", 8)
 # Fetch the ohlc for the day on the 1hour time frame
-obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "60", 24)
-# Fetch the ohlc for the day on the 1hour time frame
-obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "240", 6)
-# Fetch the ohlc for the day on the 1hour time frame
-obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "D", 1)
+# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "D", 2)
+
 
