@@ -6,7 +6,7 @@ import datetime as dt
 
 base_url = "https://api.bybit.com"
 fetch_ohlc = base_url + "/v5/market/kline"
-
+open_interest = base_url + "/v5/market/open-interest"
 
 def obtain_historical_data(url, category, symbol, interval, limit):
     """
@@ -51,7 +51,8 @@ def obtain_historical_data(url, category, symbol, interval, limit):
         for x in entry:
             # Assign the correct values for every slice of the returned list
             t = int(x[0])/1000
-            t = dt.datetime.fromtimestamp(t, datetime.UTC).strftime("%a-%d-%b-%y,%H:%M:%S")
+            d = dt.datetime.fromtimestamp(t, datetime.UTC).strftime("%a-%d-%b-%y")
+            t = dt.datetime.fromtimestamp(t, datetime.UTC).strftime("%H:%M:%S")
 
             o = round(float(x[1]))
             h = round(float(x[2]))
@@ -63,16 +64,26 @@ def obtain_historical_data(url, category, symbol, interval, limit):
             v = round(float(x[5])) * o - c
 
             # Write all the variables to a row in the csv
-            writer.writerow([t, o, h, l, c, v])
+            writer.writerow([d, t, o, h, l, c, v])
+
+def get_open_interest(url: str, category: str, symbol: str, timeframe: str, limit: int) -> None:
+    parameters: dict = {"category": category,
+                        "symbol": symbol,
+                        "intervalTime": timeframe,
+                        "limit": limit}
+
+    r = requests.get(url, params=parameters)
+    results = r.json()
+    print(results)
 
 
 # Fetch the ohlc for the day on the 15minute time frame
-# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "15", 150)
+# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "15", 1000)
 # # Fetch the ohlc for the day on the 1hour time frame
-# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "60", 30)
+# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "60", 1000)
 # # Fetch the ohlc for the day on the 1hour time frame
-# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "240", 8)
+# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "240", 1000)
 # Fetch the ohlc for the day on the 1hour time frame
-# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "D", 2)
+# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "D", 1)
 
-
+get_open_interest(open_interest, "linear", "BTCUSDT", "1", 50)
