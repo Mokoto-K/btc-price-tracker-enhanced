@@ -74,7 +74,8 @@ def get_open_interest(url: str, category: str, symbol: str, timeframe: str, limi
 
     r = requests.get(url, params=parameters)
     results = r.json()
-    print(results)
+    for row in results["result"]["list"]:
+        print(row)
 
 
 # Fetch the ohlc for the day on the 15minute time frame
@@ -84,6 +85,9 @@ def get_open_interest(url: str, category: str, symbol: str, timeframe: str, limi
 # # Fetch the ohlc for the day on the 1hour time frame
 # obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "240", 1000)
 # Fetch the ohlc for the day on the 1hour time frame
-obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "D", 5)
+# obtain_historical_data(fetch_ohlc, "linear", "BTCUSDT", "D", 5)
 
-# get_open_interest(open_interest, "linear", "BTCUSDT", "1", 50)
+get_open_interest(open_interest, "linear", "BTCUSDT", "1d", 50)
+
+
+
